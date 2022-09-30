@@ -13,5 +13,12 @@ router.get("/api/csrf/restore", (req, res) => {
   });
 });
 
-
+// const { requireAuth } = require('../../utils/auth.js');
+// router.get(
+//   '/require-auth',
+//   requireAuth,
+//   (req, res) => {
+//     return res.json(req.user);
+//   }
+// );
 module.exports = router;
