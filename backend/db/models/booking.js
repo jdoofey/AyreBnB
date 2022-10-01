@@ -11,11 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Booking.belongsTo(models.Spot, {foreignKey:"spotId"}),
+      Booking.belongsTo(models.User, {foreignKey:"userId"})
     }
   }
   Booking.init({
-    spotId: {type: DataTypes.INTEGER, onDelete:"CASCADE",},
-    userId: {type: DataTypes.INTEGER, onDelete:"CASCADE",},
+    spotId: {type: DataTypes.INTEGER, onDelete:"CASCADE", references:{model:"Spots", key:"id"}},
+    userId: {type: DataTypes.INTEGER, onDelete:"CASCADE", references:{model:"Users", key:"id"}},
     startDate: {type: DataTypes.DATEONLY, allowNull:false,},
     endDate: {type: DataTypes.DATEONLY, allowNull:false,
       validate: {startDateConflict(){
