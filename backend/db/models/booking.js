@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: {type: DataTypes.INTEGER, onDelete:"CASCADE",},
     startDate: {type: DataTypes.DATEONLY, allowNull:false,},
     endDate: {type: DataTypes.DATEONLY, allowNull:false,
-      valideate: {startDateConflict(){
+      validate: {startDateConflict(){
         if(this.startDate >= this.endDate) throw new Error("endDate must be after startDate")
       }}
     },
