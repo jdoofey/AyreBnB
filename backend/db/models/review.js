@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class SpotImage extends Model {
+  class Review extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  SpotImage.init({
-    id: {type: DataTypes.INTEGER, primaryKey:true, autoIncrement:true},
-    spotId: {type: DataTypes.INTEGER, onDelete:"CASCADE"},
-    url: {type: DataTypes.STRING,},
-    preview: {type: DataTypes.BOOLEAN},
+  Review.init({
+    userId: {type: DataTypes.INTEGER,allowNull:false},
+    spotId: {type: DataTypes.INTEGER,allowNull:false, onDelete:"CASCADE"},
+    review: {type: DataTypes.STRING,},
+    stars: {type: DataTypes.DECIMAL,allowNull:false,validate:{min:0,max:5}},
   }, {
     sequelize,
-    modelName: 'SpotImage',
+    modelName: 'Review',
   });
-  return SpotImage;
+  return Review;
 };
