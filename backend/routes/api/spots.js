@@ -17,6 +17,31 @@ const {
   Booking,
 } = require("../../db/models");
 const { Op } = require("sequelize");
+//get details of a spot by id
+router.get("/:spotId", async (req, res, next) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  if (spot) {
+    const spotDeets = spot.toJSON();
+
+    spotDeets.numReviews = await Review.count({ where: { spotId: spot.id } });
+    const reviewSum = await Review.sum('stars', { where: { spotId: spot.id } });
+    spotDeets.avgStarRating = reviewSum / spotDeets.numReviews;
+    spotDeets.spotImages = await SpotImage.findAll({
+        where: { spotId: spot.id },
+        attributes: ['id', 'url', 'preview']
+    });
+    spotDeets.Owner = await User.findByPk(spot.ownerId, { attributes: ['id', 'firstName', 'lastName'] });
+
+
+    res.json(spotDeets);
+}
+else res.status(404).json({
+    message: "Spot couldn't be found",
+    statusCode: 404
+});
+});
+
 //get all spots by current user
 router.get("/current", requireAuth, async (req, res, next) => {
   const userId = req.user.id;
