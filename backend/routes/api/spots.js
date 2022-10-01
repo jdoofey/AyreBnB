@@ -17,8 +17,44 @@ const {
   Booking,
 } = require("../../db/models");
 const { Op } = require("sequelize");
+//get all spots by current user
+router.get("/current", requireAuth, async (req, res, next) => {
+  const userId = req.user.id;
+  const currUserSpots = await Spot.findAll({
+    where: { ownerId: userId },
+    raw: true,
+  });
 
-router.get("/", async (req, res) => {
+  for (let i = 0; i < currUserSpots.length; i++) {
+    const spot = currUserSpots[i];
+
+    const numReviews = await Review.count({ where: { spotId: spot.id } });
+    const sumRatings = await Review.sum("stars", {
+      where: { spotId: spot.id },
+    });
+
+    if (numReviews > 0 && sumRatings > 0)
+      spot.avgRating = sumRatings / numReviews;
+    else spot.avgRating = null;
+
+    const spotPreviews = await SpotImage.findAll({
+      where: { spotId: spot.id },
+      raw: true,
+    });
+    if (spotPreviews) {
+      spotPreviews.forEach((item) => {
+        if (item.preview === true || item.preview === 1)
+          spot.previewImage = item.url;
+      });
+
+      if (!spot.previewImage) spot.previewImage = null;
+    } else spot.previewImage = null;
+  }
+
+  res.json({ Spots: currUserSpots });
+});
+//get all spots with queries
+router.get("/", async (req, res, next) => {
   let err = { errors: {} };
   let { size, page, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
@@ -87,27 +123,37 @@ router.get("/", async (req, res) => {
     return next(err);
   }
 
-  const spots = await Spot.findAll({where, raw:true, ...pagination});
-  for (let i = 0; i < spots.length; i++){
+  const spots = await Spot.findAll({ where, raw: true, ...pagination });
+  for (let i = 0; i < spots.length; i++) {
     const spot = spots[i];
 
-    const numReviews = await Review.count({where:{spotId: spot.id}});
-    const sumRatings = await Review.sum("stars", {where:{spotId:spot.id}});
-    if (numReviews>0 && sumRatings>0) spot.avgRating = sumRatings/numReviews;
+    const numReviews = await Review.count({ where: { spotId: spot.id } });
+    const sumRatings = await Review.sum("stars", {
+      where: { spotId: spot.id },
+    });
+    if (numReviews > 0 && sumRatings > 0)
+      spot.avgRating = sumRatings / numReviews;
     else spot.avgRating = null;
 
-    const spotPreviews = await SpotImage.findAll({where: {spotId: spot.id}, raw:true});
+    const spotPreviews = await SpotImage.findAll({
+      where: { spotId: spot.id },
+      raw: true,
+    });
     if (spotPreviews) {
-      spotPreviews.forEach(preview => {
-        if (preview.preview ===true || preview.preview===1) spot.previewImage = preview.url;
+      spotPreviews.forEach((preview) => {
+        if (preview.preview === true || preview.preview === 1)
+          spot.previewImage = preview.url;
       });
-      if (!spot.previewImage) spot.previewImage = null
-    } else spot.previewImage = null
+      if (!spot.previewImage) spot.previewImage = null;
+    } else spot.previewImage = null;
   }
-  res.json({Spots: spots, page, size})
+  res.json({ Spots: spots, page, size });
 });
 
-
-
+//get all spots by current user
+router.get("/current", requireAuth, async (req, res, next) => {
+  const userId = req.user.id;
+  const currUserSpots = await Spot.findAll;
+});
 
 module.exports = router;
