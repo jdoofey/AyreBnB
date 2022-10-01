@@ -17,6 +17,55 @@ const {
   Booking,
 } = require("../../db/models");
 const { Op } = require("sequelize");
+
+//create a spot
+router.post("/", requireAuth, async (req, res, next) => {
+  const { name, description, price, address, city, state, country, lat, lng } =
+    req.body;
+
+  if (
+    name &&
+    description &&
+    price &&
+    address &&
+    city &&
+    state &&
+    country &&
+    lat &&
+    lng
+  ) {
+    const spot = await Spot.create({
+      ownerId: req.user.id,
+      name,
+      description,
+      price,
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+    });
+    res.status(201).json(spot);
+  } else {
+    let err = {};
+    err.errors = {};
+    if (!name) err.errors.name = "Name must be less than 50 characters";
+    if (!description) err.errors.description = "Description is required";
+    if (price.length === 0) err.errors.price = "Price per day is required";
+    if (!address) err.errors.address = "Street address is required";
+    if (!city) err.errors.city = "City is required";
+    if (!state) err.errors.state = "State is required";
+    if (!country) err.errors.country = "Country is required";
+    if (!lat) err.errors.lat = "Latitude is not valid";
+    if (!lng) err.errors.lng = "Longitude is not valid";
+
+    err.title = "Validation Error";
+    err.message = "Validation Error";
+    err.status = 400;
+    return next(err);
+  }
+});
 //get details of a spot by id
 router.get("/:spotId", async (req, res, next) => {
   const spot = await Spot.findByPk(req.params.spotId);
@@ -25,21 +74,22 @@ router.get("/:spotId", async (req, res, next) => {
     const spotDeets = spot.toJSON();
 
     spotDeets.numReviews = await Review.count({ where: { spotId: spot.id } });
-    const reviewSum = await Review.sum('stars', { where: { spotId: spot.id } });
+    const reviewSum = await Review.sum("stars", { where: { spotId: spot.id } });
     spotDeets.avgStarRating = reviewSum / spotDeets.numReviews;
     spotDeets.spotImages = await SpotImage.findAll({
-        where: { spotId: spot.id },
-        attributes: ['id', 'url', 'preview']
+      where: { spotId: spot.id },
+      attributes: ["id", "url", "preview"],
     });
-    spotDeets.Owner = await User.findByPk(spot.ownerId, { attributes: ['id', 'firstName', 'lastName'] });
-
+    spotDeets.Owner = await User.findByPk(spot.ownerId, {
+      attributes: ["id", "firstName", "lastName"],
+    });
 
     res.json(spotDeets);
-}
-else res.status(404).json({
-    message: "Spot couldn't be found",
-    statusCode: 404
-});
+  } else
+    res.status(404).json({
+      message: "Spot couldn't be found",
+      statusCode: 404,
+    });
 });
 
 //get all spots by current user
