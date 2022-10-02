@@ -48,21 +48,69 @@ const validateSpot = [
     .withMessage("Longitude is not valid"),
   handleValidationErrors,
 ];
+const validateReview = [
+  check("review")
+    .exists({ checkFalsy: true })
+    .withMessage("Review text is required"),
+  check("stars")
+    .exists({ checkFalsy: true })
+    .withMessage("Stars is required")
+    .isLength({ min: 1, max: 5 })
+    .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors,
+];
 
+//create a review for spot based on id
+router.post(
+  "/:spotId/reviews",
+  requireAuth,
+  validateReview,
+  async (req, res, next) => {
+    const singleSpot = await Spot.findByPk(req.params.spotId);
+    if (singleSpot) {
+      const spot = singleSpot.toJSON();
+      const review = await Review.findOne({
+        where: { userId: req.user.id, spotId: spot.id },
+      });
+      if (review)
+        return res
+          .status(403)
+          .json({
+            message: "User already has a review for this spot",
+            statusCode: 403,
+          });
+      else {
+        const { review, stars } = req.body;
+        const currentReview = await singleSpot.createReview({
+          userId:req.user.id,
+          review,
+          stars
+        });
+        return res.status(201).json(currentReview)
+      }
+    }
+    else return res.status(404).json({"message":"Spot couldn't be found", "statusCode":404})
+  }
+);
+//get all reviews by spot id
 router.get("/:spotId/reviews", async (req, res, next) => {
   const singleSpot = await Spot.findByPk(req.params.spotId);
-  if(singleSpot){
-    const spot = singleSpot.toJSON()
+  if (singleSpot) {
+    const spot = singleSpot.toJSON();
     const reviews = await Review.findAll({
-      where:{spotId:spot.id},
-      include:[{model:User, attributes:["id","firstName","lastName"]},
-              {model:ReviewImage, attributes:["id","url"]}]
-    })
-    return res.json({Reviews:reviews})
+      where: { spotId: spot.id },
+      include: [
+        { model: User, attributes: ["id", "firstName", "lastName"] },
+        { model: ReviewImage, attributes: ["id", "url"] },
+      ],
+    });
+    return res.json({ Reviews: reviews });
   } else {
-    return res.status(404).json({"message":"Spot couldn't be found", "statusCode":404})
+    return res
+      .status(404)
+      .json({ message: "Spot couldn't be found", statusCode: 404 });
   }
-})
+});
 //delete a spot
 router.delete("/:spotId", requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(parseInt(req.params.spotId));
@@ -385,7 +433,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
   if (spot) {
     if (spot.ownerId === req.user.id) {
       const spotBookings = await Booking.findAll({
-        where: {spotId: spot.id},
+        where: { spotId: spot.id },
         include: {
           model: User,
           attributes: ["id", "firstName", "lastName"],
