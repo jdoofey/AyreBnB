@@ -46,7 +46,7 @@ module.exports = {
       lat:37.3875,
       lng:122.0575,
       name:"Romantic Redwoods Cottage",
-      description:"Relax and unplug in this romantic, unique, and tranquil getaway spot. A short nature path guides you gently down to your own cottage in the redwoods. Wake to find yourself looking up through the glass ceiling at the trees above. Our cool mountain air makes for great snuggle weather encouraging long relaxing mornings in bed.",
+      description:"A short nature path guides you gently down to your cottage in the redwoods. Wake to find yourself looking up through the glass ceiling at the trees above. Cool mountain air makes for great snuggle weather encouraging relaxing mornings in bed.",
       price:415
     },
    ])
