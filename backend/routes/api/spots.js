@@ -49,7 +49,20 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
-router.get("/:id")
+router.get("/:spotId/reviews", async (req, res, next) => {
+  const singleSpot = await Spot.findByPk(req.params.spotId);
+  if(singleSpot){
+    const spot = singleSpot.toJSON()
+    const reviews = await Review.findAll({
+      where:{spotId:spot.id},
+      include:[{model:User, attributes:["id","firstName","lastName"]},
+              {model:ReviewImage, attributes:["id","url"]}]
+    })
+    return res.json({Reviews:reviews})
+  } else {
+    return res.status(404).json({"message":"Spot couldn't be found", "statusCode":404})
+  }
+})
 //delete a spot
 router.delete("/:spotId", requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(parseInt(req.params.spotId));
