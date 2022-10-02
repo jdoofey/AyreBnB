@@ -17,6 +17,17 @@ const {
 const { Op } = require("sequelize");
 const router = express.Router();
 const validateSpot = [
+  check("name")
+    .exists({ checkFalsy: true })
+    .withMessage("Name is required")
+    .isLength({ max: 50 })
+    .withMessage("Name must be less than 50 characters"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
+  check("price")
+    .exists({ checkFalsy: true })
+    .withMessage("Price per day is required"),
   check("address")
     .exists({ checkFalsy: true })
     .withMessage("Street address is required"),
@@ -35,17 +46,6 @@ const validateSpot = [
     .withMessage("Longitude is required")
     .isLength({ min: -180, max: 180 })
     .withMessage("Longitude is not valid"),
-  check("name")
-    .exists({ checkFalsy: true })
-    .withMessage("Name is required")
-    .isLength({ max: 50 })
-    .withMessage("Name must be less than 50 characters"),
-  check("description")
-    .exists({ checkFalsy: true })
-    .withMessage("Description is required"),
-  check("price")
-    .exists({ checkFalsy: true })
-    .withMessage("Price per day is required"),
   handleValidationErrors,
 ];
 //delete a spot
