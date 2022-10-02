@@ -8,7 +8,6 @@ const {
   restoreUser,
 } = require("../../utils/auth");
 const {
-  sequelize,
   User,
   Spot,
   SpotImage,
@@ -18,6 +17,18 @@ const {
 } = require("../../db/models");
 const { Op } = require("sequelize");
 
+//add an image to a spot based on spot id
+router.post("/:spotId/images", requireAuth, async (req, res, next) => {
+  const { url, preview } = req.body;
+
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (!spot)
+    return res
+      .status(404)
+      .json({ message: "Spot couldn't be found", statusCode: 404 });
+  const spotImage = await SpotImage.create({ spotId: spot.id, url, preview });
+  res.json({ id: spotImage.id, url, preview });
+});
 //create a spot
 router.post("/", requireAuth, async (req, res, next) => {
   const { name, description, price, address, city, state, country, lat, lng } =
