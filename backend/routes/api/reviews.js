@@ -15,7 +15,19 @@ const {
   requireAuth,
   restoreUser,
 } = require("../../utils/auth");
-
+//add image to review based on review id
+router.post("/:reviewId/images", requireAuth, async (req, res, next)=> {
+  const {url} = req.body
+  const review = await Review.findByPk(req.params.reviewId);
+  if (review) {
+    if (review.userId===req.user.id){
+      const reviewImageCount = await ReviewImage.count({where:{reviewId:review.id}})
+      if (reviewImageCount>=10) return res.status(403).json({"message":"Maximum number of images for this resource was reached","statusCode":403})
+      const currentReviewImage = await ReviewImage.create({url,reviewId:review.id})
+      res.json(currentReviewImage)
+    } else return res.status(403).json({"message":"Forbidden", "statusCode":403})
+  }else return res.status(404).json({"message":"Review couldn't be found", "statusCode":404})
+})
 //get all review of current user
 router.get("/current", requireAuth, async (req, res, next) => {
   const reviews = await Review.findAll({
