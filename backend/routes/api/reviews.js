@@ -26,6 +26,17 @@ const validateReview = [
       .withMessage('Stars must be an integer from 1 to 5'),
   handleValidationErrors
 ];
+
+//delete a review
+router.delete("/:reviewId", requireAuth, async (req, res, next)=> {
+  const review = await Review.findByPk(req.params.reviewId);
+  if(review){
+    if(review.userId === req.user.id) {
+      await review.destroy()
+      res.json({"message":"Successfully deleted", "statusCode":200})
+    } else res.status(403).json({"message":"Forbidden", "statusCode":403})
+  } else res.status(404).json({"message":"Review couldn't be found", "statusCode":404})
+})
 //edit a review
 router.put("/:reviewId", requireAuth,validateReview, async (req, res, next) => {
   const {review, stars} = req.body;
