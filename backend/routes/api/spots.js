@@ -38,7 +38,7 @@ const validateSpot = [
   check("name")
     .exists({ checkFalsy: true })
     .withMessage("Name is required")
-    .isLength({ max: 49 })
+    .isLength({ max: 50 })
     .withMessage("Name must be less than 50 characters"),
   check("description")
     .exists({ checkFalsy: true })
@@ -48,6 +48,25 @@ const validateSpot = [
     .withMessage("Price per day is required"),
   handleValidationErrors,
 ];
+//delete a spot
+router.delete("/:spotId", requireAuth, async (req, res, next) => {
+  const spot = await Spot.findByPk(parseInt(req.params.spotId));
+  if (spot) {
+    if (spot.ownerId === req.user.id) {
+      await spot.destroy();
+      res.json({ message: "Successfully deleted", statusCode: 200 });
+    } else {
+      const err = new Error("Forbidden");
+      err.title = "Authorization Error";
+      err.message = "Forbidden";
+      err.status = 403;
+      return next(err);
+    }
+  } else
+    res
+      .status(404)
+      .json({ message: "Spot couldn't be found", statusCode: 404 });
+});
 //edit a spot
 router.put("/:spotId", requireAuth, validateSpot, async (req, res, next) => {
   const spot = await Spot.findByPk(parseInt(req.params.spotId));
@@ -68,11 +87,11 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res, next) => {
       await spot.save();
       res.json(spot);
     } else {
-        const err = new Error("Forbidden");
-        err.title = "Authorization Error";
-        err.message = "Forbidden";
-        err.status = 403;
-        return next(err);
+      const err = new Error("Forbidden");
+      err.title = "Authorization Error";
+      err.message = "Forbidden";
+      err.status = 403;
+      return next(err);
     }
   } else {
     res.status(404).json({
