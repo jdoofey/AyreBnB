@@ -48,6 +48,8 @@ const validateSpot = [
     .withMessage("Longitude is not valid"),
   handleValidationErrors,
 ];
+
+router.get("/:id")
 //delete a spot
 router.delete("/:spotId", requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(parseInt(req.params.spotId));
@@ -320,10 +322,80 @@ router.get("/", async (req, res, next) => {
   res.json({ Spots: spots, page, size });
 });
 
-//get all spots by current user
-router.get("/current", requireAuth, async (req, res, next) => {
-  const userId = req.user.id;
-  const currUserSpots = await Spot.findAll;
+router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (spot) {
+    if (spot.ownerId === req.user.id) {
+      const bookings = await Booking.findAll({
+        where: { spotId: spot.id },
+        raw: true,
+      });
+
+      for (let i = 0; i < bookings.length; i++) {
+        const booking = bookings[i];
+
+        const bookingUser = await User.findOne({
+          where: { id: booking.userId },
+          attributes: ["id", "firstName", "lastName"],
+          raw: true,
+        });
+
+        booking.User = bookingUser;
+      }
+
+      res.json({ Bookings: bookings });
+    }
+
+    // if you are NOT the owner of the spot
+    else {
+      const bookings = await Booking.findAll({
+        where: {
+          spotId: spot.id,
+        },
+        attributes: ["id", "spotId", "startDate", "endDate"],
+      });
+
+      res.json({ Bookings: bookings });
+    }
+  }
+
+  // if spot not found
+  else
+    res.status(404).json({
+      message: "Spot couldn't be found",
+      statusCode: 404,
+    });
+});
+
+router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (spot) {
+    if (spot.ownerId === req.user.id) {
+      const spotBookings = await Booking.findAll({
+        where: {spotId: spot.id},
+        include: {
+          model: User,
+          attributes: ["id", "firstName", "lastName"],
+        },
+      });
+      return res.json({ Bookings: spotBookings });
+    } else {
+      const userSpotBookings = await Booking.findAll({
+        where: {
+          spotId: spot.id,
+          userId: req.user.id,
+        },
+        attributes: ["spotId", "startDate", "endDate"],
+      });
+      return res.json({ Bookings: userSpotBookings });
+    }
+  } else {
+    res.status(404);
+    return res.json({
+      message: "Spot couldn't be found",
+      statusCode: 404,
+    });
+  }
 });
 
 module.exports = router;
