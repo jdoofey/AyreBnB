@@ -59,13 +59,12 @@ const validateReview = [
     .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors,
 ];
-
+//create a bookingfor spot based on id
+router.post("/:spotId/bookings", requireAuth, async (req, res, next)=> {
+  
+})
 //create a review for spot based on id
-router.post(
-  "/:spotId/reviews",
-  requireAuth,
-  validateReview,
-  async (req, res, next) => {
+router.post("/:spotId/reviews",requireAuth,validateReview,async (req, res, next) => {
     const singleSpot = await Spot.findByPk(req.params.spotId);
     if (singleSpot) {
       const spot = singleSpot.toJSON();
@@ -384,50 +383,6 @@ router.get("/", async (req, res, next) => {
   res.json({ Spots: spots, page, size });
 });
 
-router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
-  const spot = await Spot.findByPk(req.params.spotId);
-  if (spot) {
-    if (spot.ownerId === req.user.id) {
-      const bookings = await Booking.findAll({
-        where: { spotId: spot.id },
-        raw: true,
-      });
-
-      for (let i = 0; i < bookings.length; i++) {
-        const booking = bookings[i];
-
-        const bookingUser = await User.findOne({
-          where: { id: booking.userId },
-          attributes: ["id", "firstName", "lastName"],
-          raw: true,
-        });
-
-        booking.User = bookingUser;
-      }
-
-      res.json({ Bookings: bookings });
-    }
-
-    // if you are NOT the owner of the spot
-    else {
-      const bookings = await Booking.findAll({
-        where: {
-          spotId: spot.id,
-        },
-        attributes: ["id", "spotId", "startDate", "endDate"],
-      });
-
-      res.json({ Bookings: bookings });
-    }
-  }
-
-  // if spot not found
-  else
-    res.status(404).json({
-      message: "Spot couldn't be found",
-      statusCode: 404,
-    });
-});
 
 router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
   const spot = await Spot.findByPk(req.params.spotId);
