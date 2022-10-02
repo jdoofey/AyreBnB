@@ -1,6 +1,5 @@
 const express = require("express");
-const router = express.Router();
-const { handleValidationErrors } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 const { check, param } = require("express-validator");
 const {
   setTokenCookie,
@@ -16,6 +15,72 @@ const {
   Booking,
 } = require("../../db/models");
 const { Op } = require("sequelize");
+const router = express.Router();
+const validateSpot = [
+  check("address")
+    .exists({ checkFalsy: true })
+    .withMessage("Street address is required"),
+  check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+  check("state").exists({ checkFalsy: true }).withMessage("State is required"),
+  check("country")
+    .exists({ checkFalsy: true })
+    .withMessage("Country is required"),
+  check("lat")
+    .exists({ checkFalsy: true })
+    .withMessage("Latitude is required")
+    .isLength({ min: -90, max: 90 })
+    .withMessage("Latitude is not valid"),
+  check("lng")
+    .exists({ checkFalsy: true })
+    .withMessage("Longitude is required")
+    .isLength({ min: -180, max: 180 })
+    .withMessage("Longitude is not valid"),
+  check("name")
+    .exists({ checkFalsy: true })
+    .withMessage("Name is required")
+    .isLength({ max: 49 })
+    .withMessage("Name must be less than 50 characters"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
+  check("price")
+    .exists({ checkFalsy: true })
+    .withMessage("Price per day is required"),
+  handleValidationErrors,
+];
+//edit a spot
+router.put("/:spotId", requireAuth, validateSpot, async (req, res, next) => {
+  const spot = await Spot.findByPk(parseInt(req.params.spotId));
+  const { name, description, price, address, city, state, country, lat, lng } =
+    req.body;
+
+  if (spot) {
+    if (spot.ownerId === req.user.id) {
+      if (name) spot.name = name;
+      if (description) spot.description = description;
+      if (price) spot.price = price;
+      if (address) spot.address = address;
+      if (city) spot.city = city;
+      if (state) spot.state = state;
+      if (country) spot.country = country;
+      if (lat) spot.lat = lat;
+      if (lng) spot.lng = lng;
+      await spot.save();
+      res.json(spot);
+    } else {
+        const err = new Error("Forbidden");
+        err.title = "Authorization Error";
+        err.message = "Forbidden";
+        err.status = 403;
+        return next(err);
+    }
+  } else {
+    res.status(404).json({
+      message: "Spot couldn't be found",
+      statusCode: 404,
+    });
+  }
+});
 
 //add an image to a spot based on spot id
 router.post("/:spotId/images", requireAuth, async (req, res, next) => {

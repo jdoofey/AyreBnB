@@ -10,11 +10,10 @@ const isProduction = environment === 'production';
 
 const app = express();
 
-const routes = require('./routes');
-const { ValidationError } = require('sequelize');
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+const { ValidationError } = require('sequelize');
 
 if (!isProduction) {
   // enable cors only in development
@@ -26,23 +25,24 @@ app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin"
   })
-);
+  );
 
-// Set the _csrf token and create req.csrfToken method
-app.use(
-  csurf({
-    cookie: {
-      secure: isProduction,
-      sameSite: isProduction && "Lax",
-      httpOnly: true
-    }
-  })
-);
+  // Set the _csrf token and create req.csrfToken method
+  app.use(
+    csurf({
+      cookie: {
+        secure: isProduction,
+        sameSite: isProduction && "Lax",
+        httpOnly: true
+      }
+    })
+    );
 
 
-// ...
+    // ...
 
-app.use(routes); // Connect all the routes
+    const routes = require('./routes');
+    app.use(routes); // Connect all the routes
 
 //resource not found error handler phase 2
 app.use((_req, _res, next) => {
@@ -75,10 +75,11 @@ app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
   res.json({
-    title: err.title || 'Server Error',
+
     message: err.message,
+    statusCode:(err.status || 200),
     errors: err.errors,
-    stack: isProduction ? null : err.stack
+
   });
 });
 
