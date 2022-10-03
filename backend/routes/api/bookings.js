@@ -20,10 +20,10 @@ const {
 router.delete("/:bookingId", requireAuth, async (req, res) => {
   const booking = await Booking.findByPk(req.params.bookingId);
   const date = new Date();
-  let day = date.getDate();
-  let month = date.getMonth();
-  let year = date.getFullYear();
-  let currentDate = `${year}-${month}-${day}`;
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const currentDate = `${year}-${month}-${day}`;
   if (!booking) {
     return res.status(404).json({
       message: "Booking couldn't be found",
@@ -36,11 +36,13 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
       statusCode: 403,
     });
   }
-  await booking.destroy();
-  return res.status(200).json({
-    message: "Successfully deleted",
-    statusCode: 200,
-  });
+  else{
+    await booking.destroy();
+    return res.status(200).json({
+      message: "Successfully deleted",
+      statusCode: 200,
+    });
+  }
 });
 
 router.put("/:bookingId", requireAuth, async (req, res) => {
