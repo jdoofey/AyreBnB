@@ -21,7 +21,7 @@ router.use('/spots', spotsRouter);
 router.use("/bookings", bookingsRouter);
 router.use("/reviews", reviewsRouter);
 router.use("/review-images", reviewImagesRouter);
-router.use("./spot-images", spotImagesRouter)
+router.use("/spot-images", spotImagesRouter)
 
 
 router.post('/test', function(req, res) {
