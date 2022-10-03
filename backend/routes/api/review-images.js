@@ -15,16 +15,16 @@ const {
   requireAuth,
   restoreUser,
 } = require("../../utils/auth");
-
+//Delete a Review Image
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
-  const spotImage = await SpotImage.findByPk(req.params.imageId);
-  if (spotImage) {
-      const spot = await Spot.findByPk(spotImage.spotId);
-      if (req.user.id === spot.ownerId) {
-          await spotImage.destroy();
+  const reviewImage = await ReviewImage.findByPk(req.params.imageId);
+  if (reviewImage) {
+      const review = await Review.findByPk(reviewImage.reviewId);
+      if (req.user.id === review.userId) {
+          await reviewImage.destroy();
           res.json({"message":"Successfully deleted","statusCode":200});
-      } else res.status(403).json({"message":"Forbidden","statusCode":403});
-  } else res.status(404).json({"message":"Spot Image couldn't be found","statusCode":404});
+      }else res.status(403).json({"message":"Forbidden","statusCode":403});
+  }else res.status(404).json({"message":"Review Image couldn't be found","statusCode":404});
 });
 
 module.exports = router;
