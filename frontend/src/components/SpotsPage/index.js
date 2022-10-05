@@ -5,4 +5,15 @@ import './SpotsPage.css'
 
 const SpotsPage = () => {
   const dispatch = useDispatch()
+  const spots = useSelector(state => state.spots.allSpots)
+
+  useEffect(()=> {
+    dispatch(getAllSpots())
+  }, [dispatch])
+
+  if (!spots) return (<h1>Loading...</h1>)
+
+  return (
+    
+  )
 }
