@@ -1,12 +1,38 @@
 import { csrfFetch } from "./csrf";
 
-const LOAD = 'spots/LOAD'
-const LOAD_ONE = 'spots/LOAD_ONE'
-const CREATE = 'spots/CREATE'
-const UPDATE = 'spots/UPDATE'
-const REMOVE = 'spots/REMOVE'
+const LOAD_ALL = "spots/LOAD_ALL";
+const LOAD_CURRENT = "spots/LOAD_CURRENT";
+const LOAD_ONE = "spots/LOAD_ONE";
+const ADD = "spots/ADD";
+const EDIT = "spots/EDIT";
+const REMOVE = "spots/REMOVE";
 
-const load = spots => ({
-  type: LOAD,
+const loadAll = (spots) => ({
+  type: LOAD_ALL,
   spots,
+});
+
+const loadCurrent = (spots) => ({
+  type: LOAD_CURRENT,
+  spots,
+});
+
+const loadOne = (spot) => ({
+  type: LOAD_ONE,
+  spot,
+});
+
+const add = (spot) => ({
+  type: ADD,
+  spot,
+});
+
+const edit = spot => ({
+  type: EDIT,
+  spot
+})
+
+const remove = spotId => ({
+  type: REMOVE,
+  spotId
 })
