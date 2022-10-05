@@ -42,6 +42,7 @@ export const getAllSpots = () => async dispatch => {
   const res = await fetch('/api/spots')
   if (res.ok) {
     const spots = await res.json()
+    console.log(spots)
     dispatch(loadAll(spots))
   }
 }
@@ -52,6 +53,9 @@ const spotsReducer = (state = initialState, action) => {
   const singleSpot = {}
 
   switch(action.type) {
+    case LOAD_ALL:
+      action.spots.Spots.forEach(spot=> allSpots[spot.id]=spot)
+      return {allSpots, singleSpot:{}}
     case RESET:
       return initialState
     default:
