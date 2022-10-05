@@ -38,6 +38,13 @@ const remove = spotId => ({
   spotId
 })
 
+export const getAllSpots = () => async dispatch => {
+  const res = await fetch('/api/spots')
+  if (res.ok) {
+    const spots = await res.json()
+    dispatch(loadAll(spots))
+  }
+}
 const initialState = {allSpots:{}, singleSpot:{}}
 
 const spotsReducer = (state = initialState, action) => {
