@@ -40,5 +40,13 @@ const remove = spotId => ({
 const initialState = {allSpots:{}, singleSpot:{}}
 
 const spotsReducer = (state = initialState, action) => {
-  
+  const allSpots = {}
+  const singleSpot = {}
+  let newState;
+  switch(action.type) {
+    default:
+      return state
+  }
 }
+
+export default spotsReducer
