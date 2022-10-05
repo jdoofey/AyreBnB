@@ -6,6 +6,7 @@ const LOAD_ONE = "spots/LOAD_ONE";
 const ADD = "spots/ADD";
 const EDIT = "spots/EDIT";
 const REMOVE = "spots/REMOVE";
+const RESET = 'spots/RESET'
 
 const loadAll = (spots) => ({
   type: LOAD_ALL,
@@ -42,8 +43,10 @@ const initialState = {allSpots:{}, singleSpot:{}}
 const spotsReducer = (state = initialState, action) => {
   const allSpots = {}
   const singleSpot = {}
-  let newState;
+
   switch(action.type) {
+    case RESET:
+      return initialState
     default:
       return state
   }
