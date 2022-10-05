@@ -14,6 +14,8 @@ const SpotsPage = () => {
   if (!spots) return (<h1>Loading...</h1>)
 
   return (
-    
+    <h1>MEH</h1>
   )
 }
+
+export default SpotsPage
