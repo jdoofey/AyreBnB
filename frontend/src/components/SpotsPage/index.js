@@ -1,21 +1,26 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSpots } from "../../store/spots";
-import './SpotsPage.css'
+import "./SpotsPage.css";
 
 const SpotsPage = () => {
-  const dispatch = useDispatch()
-  const spots = useSelector(state => state.spots.allSpots)
+  const dispatch = useDispatch();
+  const spots = useSelector((state) => state.spots.allSpots);
 
-  useEffect(()=> {
-    dispatch(getAllSpots())
-  }, [dispatch])
+  useEffect(() => {
+    dispatch(getAllSpots());
+  }, [dispatch]);
 
-  if (!spots) return (<h1>Loading...</h1>)
+  if (!spots) return <h1>Loading...</h1>;
 
   return (
-    <h1>MEH</h1>
-  )
-}
+    <div>
+      {Object.values(spots).map(spot => (
 
-export default SpotsPage
+        <h1>{spot.previewImage}MEH</h1>
+      ))}
+    </div>
+  );
+};
+
+export default SpotsPage;
