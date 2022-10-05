@@ -36,3 +36,9 @@ const remove = spotId => ({
   type: REMOVE,
   spotId
 })
+
+const initialState = {allSpots:{}, singleSpot:{}}
+
+const spotsReducer = (state = initialState, action) => {
+  
+}
