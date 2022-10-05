@@ -52,4 +52,4 @@ function LoginForm() {
   );
 }
 
-export default LoginFormPage;
+export default LoginForm;
