@@ -77,7 +77,7 @@ module.exports = {
       ownerId:6,
       address:"",
       city:"",
-      state:"CO",
+      state:"",
       country:"",
       lat:39.1911,
       lng:106.8175,
@@ -86,10 +86,10 @@ module.exports = {
       price:215
     },
     {
-      ownerId:6,
+      ownerId:7,
       address:"",
       city:"",
-      state:"CO",
+      state:"",
       country:"",
       lat:39.1911,
       lng:106.8175,
@@ -98,13 +98,13 @@ module.exports = {
       price:215
     },
     {
-      ownerId:6,
+      ownerId:8,
       address:"",
       city:"",
-      state:"CO",
+      state:"",
       country:"",
-      lat:39.1911,
-      lng:106.8175,
+      lat:0,
+      lng:0,
       name:"",
       description:"",
       price:215

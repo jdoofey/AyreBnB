@@ -139,6 +139,58 @@ module.exports = {
       preview:false
     },
 
+    {
+      spotId:5,
+      url:"",
+      preview:true
+    },
+    {
+      spotId:5,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:5,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:5,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:5,
+      url:"",
+      preview:false
+    },
+
+    {
+      spotId:6,
+      url:"",
+      preview:true
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+
    ])
   },
 
