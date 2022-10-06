@@ -65,7 +65,7 @@ module.exports = {
     },
     {
       spotId:3,
-      url:"https://mediacloud.theweek.com/image/upload/f_auto,t_content-image-desktop@1/v1645734537/TWS1068.props.sherman.ext.jpg",
+      url:"https://i.pinimg.com/564x/e4/3c/17/e43c170b385671f1f0f09626dd61d2f4.jpg",
       preview:true
     },
     {
