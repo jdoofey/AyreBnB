@@ -170,6 +170,26 @@ module.exports = {
       url:"",
       preview:true
     },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
+    {
+      spotId:6,
+      url:"",
+      preview:false
+    },
 
    ])
   },
