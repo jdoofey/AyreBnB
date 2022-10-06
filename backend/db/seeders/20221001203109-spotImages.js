@@ -115,7 +115,27 @@ module.exports = {
     },
     {
       spotId:4,
-      url:"",
+      url:"https://cdn.onekindesign.com/wp-content/uploads/2022/07/Rustic-Contemporary-Mountain-Home-Pinnacle-Mountain-Homes-01-1-Kindesign.jpg",
+      preview:true
+    },
+    {
+      spotId:4,
+      url:"https://images.unsplash.com/photo-1540518614846-7eded433c457?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1157&q=80",
+      preview:false
+    },
+    {
+      spotId:4,
+      url:"https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+      preview:false
+    },
+    {
+      spotId:4,
+      url:"https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+      preview:false
+    },
+    {
+      spotId:4,
+      url:"https://images.unsplash.com/photo-1507089947368-19c1da9775ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80",
       preview:false
     },
 

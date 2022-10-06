@@ -59,7 +59,7 @@ module.exports = {
       lng:106.8175,
       name:"Mountain Home",
       description:"An authentic mountain cabin that truly says Colorado! Set on 5+ acres with beautiful views and privacy. Enjoy the relaxing sounds of the nature from the deck, soak in the hot tub, and just relax.",
-      price:415
+      price:875
     },
     {
       ownerId:4,
