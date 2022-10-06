@@ -75,17 +75,17 @@ module.exports = {
     },
     {
       spotId:3,
-      url:"",
+      url:"https://images.unsplash.com/photo-1615874959474-d609969a20ed?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
       preview:false
     },
     {
       spotId:3,
-      url:"",
+      url:"https://images.unsplash.com/photo-1523772354886-34a1dc2f72e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80",
       preview:false
     },
     {
       spotId:3,
-      url:"",
+      url:"https://images.unsplash.com/photo-1627257060697-acfbecf5d9a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
       preview:false
     },
 
