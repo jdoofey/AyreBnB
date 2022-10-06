@@ -89,7 +89,7 @@ module.exports = {
       ownerId:7,
       address:"",
       city:"",
-      state:"CO",
+      state:"",
       country:"",
       lat:39.1911,
       lng:106.8175,
