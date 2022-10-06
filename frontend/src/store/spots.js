@@ -55,7 +55,7 @@ const spotsReducer = (state = initialState, action) => {
   switch(action.type) {
     case LOAD_ALL:
       action.spots.Spots.forEach(spot=> allSpots[spot.id]=spot)
-      return {allSpots, singleSpot:{}}
+      return {allSpots, singleSpot}
     case RESET:
       return initialState
     default:
