@@ -165,6 +165,12 @@ module.exports = {
       preview:false
     },
 
+    {
+      spotId:6,
+      url:"",
+      preview:true
+    },
+
    ])
   },
 
