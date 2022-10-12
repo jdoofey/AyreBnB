@@ -1,0 +1,17 @@
+#spot-card-container{
+  width:500px;
+  height:500px;
+}
+#all-spots-container{
+  display: grid;
+  /* border: 1px red solid; */
+  grid-template-columns: repeat(5, 350px);
+
+  /* grid-column-gap: 20px; */
+  justify-items: center;
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-bottom: 70px;
+  padding-bottom: 25px;
+  justify-content: center;
+}

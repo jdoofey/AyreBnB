@@ -14,10 +14,15 @@ const SpotsPage = () => {
   if (!spots) return <h1>Loading...</h1>;
 
   return (
-    <div>
+    <div id="all-spots-container">
       {Object.values(spots).map(spot => (
+        <>
 
-        <h1>{spot.previewImage}MEH</h1>
+        <div id="spot-card-container">
+
+        <img style={{width:"250px", height:"250px"}}src={spot.previewImage}></img>
+        </div>
+        </>
       ))}
     </div>
   );
